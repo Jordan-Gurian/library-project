@@ -9,6 +9,7 @@ readCheckBox = sampleBookCard.querySelector("input[name=is-read]");
 
 
 
+
 function Book(title, author, pages, isRead) {
     this.title = title;
     this.author = author;
@@ -31,22 +32,36 @@ function addBookToLibrary(book, library) {
     return
 }
 
+function deleteBook(book, library) {
+    index = library.indexOf(book);
+    if (index > -1) {
+        library.splice(index, 1);
+    }
+    return
+}
+
 function displayLibrary(library) {
     const bookContainer = document.querySelector(".container");
     bookContainer.innerHTML='';
     for (let bookNum = 0; bookNum < library.length; bookNum++) {
         const newBookCard = sampleBookCard.cloneNode(true);
+        newBookCard.id = "card" + bookNum;
         bookContainer.appendChild(newBookCard);
+        deleteButton = newBookCard.querySelector(".delete-button");
+        deleteButton.addEventListener('click', function() {
+            deleteBook(library[newBookCard.id.slice(-1)], library);
+            newBookCard.remove();
+
+        })
         for (property in library[bookNum]) {
             if (property === "info") {
                 continue;
             }
             else if (property === "isRead") {
                 const newDiv = newBookCard.querySelector("#is-read");
-                newDiv.id = "is-read" + bookNum;
                 newDiv.checked = library[bookNum][property];
                 newDiv.addEventListener('click', function() {
-                    library[newDiv.id.slice(-1)].isRead = newDiv.checked;
+                    library[newBookCard.id.slice(-1)].isRead = newDiv.checked;
                 })
             }
             else {
