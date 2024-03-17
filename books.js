@@ -5,6 +5,10 @@ const newBookForm = document.querySelector(".new-book-form")
 const sampleBookCard = document.querySelector(".card");
 sampleBookCard.remove();
 
+readCheckBox = sampleBookCard.querySelector("input[name=is-read]");
+
+
+
 function Book(title, author, pages, isRead) {
     this.title = title;
     this.author = author;
@@ -30,20 +34,24 @@ function addBookToLibrary(book, library) {
 function displayLibrary(library) {
     const bookContainer = document.querySelector(".container");
     bookContainer.innerHTML='';
-    for (book of library) {
+    for (let bookNum = 0; bookNum < library.length; bookNum++) {
         const newBookCard = sampleBookCard.cloneNode(true);
         bookContainer.appendChild(newBookCard);
-        for (property in book) {
+        for (property in library[bookNum]) {
             if (property === "info") {
                 continue;
             }
             else if (property === "isRead") {
                 const newDiv = newBookCard.querySelector("#is-read");
-                newDiv.checked = book[property];
+                newDiv.id = "is-read" + bookNum;
+                newDiv.checked = library[bookNum][property];
+                newDiv.addEventListener('click', function() {
+                    library[newDiv.id.slice(-1)].isRead = newDiv.checked;
+                })
             }
             else {
                 const newDiv = newBookCard.querySelector("." + property);
-                newDiv.textContent = book[property];
+                newDiv.textContent = library[bookNum][property];
             }
         }
     }
