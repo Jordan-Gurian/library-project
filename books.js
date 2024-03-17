@@ -25,6 +25,9 @@ function Book(title, author, pages, isRead) {
         }
         return `${this.title} by ${this.author}, ${this.pages} pages, ${readStatus}`
     }
+    this.changeRead = function() {
+        this.isRead = !this.isRead;
+    }
 }
 
 function addBookToLibrary(book, library) {
@@ -71,7 +74,7 @@ function displayLibrary(library) {
                     newDiv = newBookCard.querySelector("#is-read");
                     newDiv.checked = library[bookNum][property];
                     newDiv.addEventListener('click', function() {
-                        library[newBookCard.id.slice(-1)].isRead = newDiv.checked;
+                        library[newBookCard.id.slice(-1)].changeRead();
                     })
                     break;
                 default:
