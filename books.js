@@ -54,19 +54,28 @@ function displayLibrary(library) {
 
         })
         for (property in library[bookNum]) {
-            if (property === "info") {
-                continue;
-            }
-            else if (property === "isRead") {
-                const newDiv = newBookCard.querySelector("#is-read");
-                newDiv.checked = library[bookNum][property];
-                newDiv.addEventListener('click', function() {
-                    library[newBookCard.id.slice(-1)].isRead = newDiv.checked;
-                })
-            }
-            else {
-                const newDiv = newBookCard.querySelector("." + property);
-                newDiv.textContent = library[bookNum][property];
+            let newDiv = newBookCard.querySelector("." + property);
+            switch (property) {
+                case "title":
+                    newDiv.textContent = library[bookNum][property];
+                    break;
+                case "author":
+                    newDiv.textContent = "By: " + library[bookNum][property];
+                    newDiv.style.fontStyle = "italic";
+                    break;
+                case "pages":
+                    newDiv.textContent = "Pages: " + library[bookNum][property];
+                    newDiv.style.fontStyle = "italic";
+                    break;
+                case "isRead":
+                    newDiv = newBookCard.querySelector("#is-read");
+                    newDiv.checked = library[bookNum][property];
+                    newDiv.addEventListener('click', function() {
+                        library[newBookCard.id.slice(-1)].isRead = newDiv.checked;
+                    })
+                    break;
+                default:
+                    break;
             }
         }
     }
